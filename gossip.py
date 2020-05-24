@@ -124,6 +124,7 @@ def evaluate_model(model_path, code, input_shape=[30, 61]):
     for i in range(len(test_set.labels)):
         print(str(test_set.labels[i]) + "\t" + str(pred[i]) + "\t" + str(cr[i] + 1.) + "\t" + str(cr[i]))
     print("turnover: %s " % turnover(pred))
+    return pred[-1]
 
 
 def make_model(nb_epochs=100, batch_size=128, lr=0.01, n_layers=1, n_hidden=14, rate_dropout=0.3, loss=risk_estimation):
@@ -198,15 +199,15 @@ def make_separate_model(nb_epochs=100, batch_size=128, lr=0.01, n_layers=1, n_hi
 
 
 if __name__ == '__main__':
-    operation = "train"
+    operation = "predict"
     # input_shape = [30, 102]
     if len(sys.argv) > 1:
         operation = sys.argv[1]
     if operation == "train":
         # make_separate_model(10000, 512, lr=0.0005, n_hidden=14, rate_dropout=0.5, input_shape=[30, 73])
-        make_model(30000, 512, lr=0.0004, n_hidden=14, rate_dropout=0.5)
+        make_model(3000, 512, lr=0.0004, n_hidden=14, rate_dropout=0.5)
         # make_model(30000, 512, lr=0.01, n_hidden=64, rate_dropout=0.5, loss=pairwise_logit)
     elif operation == "predict":
-        evaluate_model("model.30.best", "000001")
+        evaluate_model("model.30.best", "xbtusd_1h")
     else:
         print("Usage: gossip.py [train | predict]")

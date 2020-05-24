@@ -26,7 +26,7 @@ def extract_from_file(filepath, output_prefix, window=30):
     days_for_test = 700
     # input_shape = [30, 61]  # [length of time series, length of feature]
       # input_shape[0]
-    fp = open("%s_feature" % output_prefix, "w")
+    fp = open("%s_feature" % output_prefix, "wb")
     # lp = open("%s_label.%s" % (output_prefix, window), "w")
     # fpt = open("%s_feature.test.%s" % (output_prefix, window), "w")
     # lpt = open("%s_label.test.%s" % (output_prefix, window), "w")
