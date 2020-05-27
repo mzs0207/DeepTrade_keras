@@ -25,6 +25,7 @@ class MockExchange(object):
         self.config = {}
         self.config_file = "config.json"
         self.load_config()
+        self.fee_rate = 0.002
 
     def load_config(self):
         """
@@ -58,7 +59,7 @@ class MockExchange(object):
         :return:
         """
         self.config["money"] -= price * volume
-        self.config["btc"] += volume
+        self.config["btc"] += volume * (1 - self.fee_rate)
         op = "{0} buy {2} at {1}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), price, volume)
         self.config["history"].append(op)
         self.messager.send(op)
@@ -70,7 +71,7 @@ class MockExchange(object):
         :param volume:
         :return:
         """
-        self.config["money"] += price * volume
+        self.config["money"] += price * volume * (1 - self.fee_rate)
         self.config["btc"] -= volume
         op = "{0} sell {2} at {1}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), price, volume)
         self.config["history"].append(op)
