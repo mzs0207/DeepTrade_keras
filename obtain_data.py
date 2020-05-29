@@ -10,6 +10,7 @@ import requests
 
 from gossip import evaluate_model
 from mock_exchange import MockExchange
+from table_store import save_predict
 
 
 def get_data(start, end, bin_size):
@@ -101,6 +102,7 @@ def get_last_data():
             f.write("{0}\t{1}\n".format(now.strftime("%Y-%m-%d %H:%M:%S"), hold_pct))
         m = MockExchange()
         m.trade(hold_pct[0])
+        save_predict(int(now.strftime("%Y%m%d%H")), "btc", hold_pct)
 
 
 def run_period():
