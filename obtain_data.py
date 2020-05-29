@@ -11,6 +11,7 @@ import requests
 from gossip import evaluate_model
 from mock_exchange import MockExchange
 from table_store import save_predict
+import traceback
 
 
 def get_data(start, end, bin_size):
@@ -102,7 +103,7 @@ def get_last_data():
             f.write("{0}\t{1}\n".format(now.strftime("%Y-%m-%d %H:%M:%S"), hold_pct))
         m = MockExchange()
         m.trade(hold_pct[0])
-        save_predict(int(now.strftime("%Y%m%d%H")), "btc", hold_pct)
+        save_predict(int(now.strftime("%Y%m%d%H")), "btc", float(hold_pct[0]))
 
 
 def run_period():
@@ -116,6 +117,7 @@ def run_period():
             get_last_data()
         except Exception as e:
             print(e)
+            traceback.print_exc()
         # hour_second()
         time.sleep(60)
 
