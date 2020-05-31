@@ -7,6 +7,7 @@ import datetime
 import time
 
 import requests
+from requests.adapters import HTTPAdapter
 
 from gossip import evaluate_model
 from mock_exchange import MockExchange
@@ -28,7 +29,10 @@ def get_data(start, end, bin_size):
         header = {
             "Accept": "application/json"
         }
-        response = requests.get(url, headers=header)
+        s = requests.session()
+        s.mount("https://", HTTPAdapter(max_retries=3))
+        s.mount("http://", HTTPAdapter(max_retries=3))
+        response = s.get(url, headers=header, timeout=5)
         return response.json()
     except Exception as e:
         print(e)
@@ -76,7 +80,7 @@ def hour_second():
 
     :return:
     """
-    count = 3600 - time.time() % 3600 + 2.0
+    count = 60 - time.time() % 60
     print("sleep {0} second".format(count))
     time.sleep(count)
 
@@ -118,8 +122,8 @@ def run_period():
         except Exception as e:
             print(e)
             traceback.print_exc()
-        # hour_second()
-        time.sleep(60)
+        hour_second()
+        #time.sleep(60)
 
 
 if __name__ == '__main__':
